@@ -229,12 +229,16 @@ function boat_check_valid_move(num) {
             if (player_ships_placed.player2.charAt(num) != ".") { //<-- checks to ensure there isn't already a ship placed there
                 return false;
             } else if (player_ships_placed.player2.charAt(num - i) == num_of_ships && is_horizontal) {
+                is_vertical = false;
                 return true
             } else if (player_ships_placed.player2.charAt(num + i) == num_of_ships && is_horizontal) {
+                is_vertical = false;
                 return true;
             } else if (player_ships_placed.player2.charAt(num - (i * 10)) == num_of_ships && is_vertical) {
+                is_horizontal = false;
                 return true;
             } else if (player_ships_placed.player2.charAt(num + (i * 10)) == num_of_ships && is_vertical) {
+                is_horizontal = false;
                 return true;
             }
             return false;
