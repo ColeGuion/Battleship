@@ -1,4 +1,4 @@
-let in_boat_selcection = true; //if in the boat selection phase
+let in_boat_selection = true; //if in the boat selection phase
 let num_of_ships = 1; //holds the number of ships
 let ship_inc = 1; //increment that counts up to compare with the number of ships
 let max_ships; //maximum amount of ships that players can place
@@ -26,7 +26,7 @@ let player_ships_placed = {
  */
 function boat_sel_click() {
     console.log(this);
-    if (in_boat_selcection) {
+    if (in_boat_selection) {
         if (boat_first_click && !first_turn_already_a_ship_there(parseInt(this.id)) && valid_first_block(parseInt(this.id))) {
             store_ship(parseInt(this.id));
             var shipImage = document.createElement('img');
@@ -79,7 +79,7 @@ function boat_sel_click() {
         }
 
         if (!is_player_one && num_of_ships == 7) {
-            in_boat_selcection = false;
+            in_boat_selection = false;
             in_combat = true;
             fillSquaresPlayer2();
             start_combat();
@@ -158,13 +158,13 @@ function ask_more_ships() {
             is_player_one = false;
             num_of_ships = 1;
         } else if (!is_player_one && num_of_ships == max_ships + 1) {
-            in_boat_selcection = false;
+            in_boat_selection = false;
             in_combat = true;
             fillSquaresPlayer2();
             start_combat();
             console.log("should start combat phase")
         } else if (!is_player_one && ship_inc == 7) {
-            in_boat_selcection = false;
+            in_boat_selection = false;
             in_combat = true;
             fillSquaresPlayer2();
             start_combat();
@@ -246,7 +246,7 @@ function boat_check_valid_move(num) {
  * @author Alec Mcglynn
  * @description checks whether or not the boat has enough space to fit based on the first square
  * @param {num} - number that corresponds to a number on the board
- * @return bool 
+ * @return bool
  */
 function valid_first_block(num) {
     let space_up = 0,
