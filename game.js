@@ -98,7 +98,7 @@ function draw() {
     context.canvas.height = window.innerHeight;
     context.clearRect(0, 0, canvas.width, canvas.height);
     print_board();
-    if (in_boat_selcection) { //if game is in the selection phase
+    if (in_boat_selection) { //if game is in the selection phase
         if (is_player_one) {
             place_ships(); //function in boat_selection.js
         } else {
@@ -115,7 +115,7 @@ function draw() {
 function print_board() {
     let alph = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
     context.font = "Bold 12pt Candara";
-    if (in_boat_selcection) {
+    if (in_boat_selection) {
         if (is_player_one) {
             context.fillText("Player 1", 760, 50);
         } else {
