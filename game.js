@@ -1,30 +1,59 @@
 let canvas; //global canvas
 let context; //global context
 let is_player_one = true; //bool to track current player
+let is_ai_game = false;
 
 /**
  * @author blake richmeier
  * @version 2
- * @description checks for dom content and then prompts to ask how many ships should be played with creates canvas and creates the board
+ * @description checks for dom content and then prompts user to select between playing vs player or AI
  */
 document.addEventListener('DOMContentLoaded', () => {
-    max_ships = prompt("Welcome to Battleship, how many ships do you want to allow?");
-    while (max_ships < 1 || max_ships > 6) {
-        max_ships = prompt("Please input a value that is between 1 and 6 this time");
-    }
-    max_ships = parseInt(max_ships);
-    canvas = document.querySelector("#myCanvas");
-    context = canvas.getContext("2d");
-    let square = document.querySelectorAll('.square')
-    let grid = document.querySelector('.grid')
 
-    square.forEach(id => {
-        id.addEventListener('click', boat_sel_click)
-    })
-    draw();
+  // Initialize buttons
+  play_vs_human_button = document.createElement("play_vs_human_button");
+  play_vs_human_button.innerHTML = "Play Against Human";
+  body = document.getElementsByTagName("body")[0];
+  body.appendChild(play_vs_human_button);
+
+  play_vs_ai_button = document.createElement("play_vs_ai_button");
+  play_vs_ai_button.innerHTML = "Play Against AI";
+  body.appendChild(play_vs_ai_button);
+
+  // Define button behavior
+  play_vs_human_button.addEventListener("click", () => {
+    body.removeChild(play_vs_human_button);
+    body.removeChild(play_vs_ai_button);
+    is_ai_game = false;
+    start_game();
+  })
+
+  play_vs_ai_button.addEventListener("click", () => {
+    body.removeChild(play_vs_ai_button);
+    body.removeChild(play_vs_human_button);
+    is_ai_game = true;
+    start_game();
+  })
 })
 
+// Gets number of ships and starts the game
+function start_game()
+{
+  max_ships = prompt("How many ships do you want to allow?");
+  while (max_ships < 1 || max_ships > 6) {
+      max_ships = prompt("Please input a value that is between 1 and 6 this time");
+  }
+  max_ships = parseInt(max_ships);
+  canvas = document.querySelector("#myCanvas");
+  context = canvas.getContext("2d");
+  let square = document.querySelectorAll('.square')
+  let grid = document.querySelector('.grid')
 
+  square.forEach(id => {
+      id.addEventListener('click', boat_sel_click)
+  })
+  draw();
+}
 
 let turn = -1;
 

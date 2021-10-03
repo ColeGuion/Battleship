@@ -83,3 +83,29 @@ player_two_turn_button {
     background: rgb(241, 97, 14);
     border: none;
 }
+
+play_vs_human_button {
+    position: absolute;
+    top: 100px;
+    left: 700px;
+    width: 8%;
+    height: 8%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background: rgb(241, 97, 14);
+    border: none;
+}
+
+play_vs_ai_button {
+    position: absolute;
+    top:  210px;
+    left: 700px;
+    width: 8%;
+    height: 8%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background: rgb(241, 97, 14);
+    border: none;
+}
