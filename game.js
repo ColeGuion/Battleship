@@ -39,20 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
 // Gets number of ships and starts the game
 function start_game()
 {
-  max_ships = prompt("How many ships do you want to allow?");
-  while (max_ships < 1 || max_ships > 6) {
-      max_ships = prompt("Please input a value that is between 1 and 6 this time");
-  }
-  max_ships = parseInt(max_ships);
-  canvas = document.querySelector("#myCanvas");
-  context = canvas.getContext("2d");
-  let square = document.querySelectorAll('.square')
-  let grid = document.querySelector('.grid')
+    max_ships = prompt("How many ships do you want to allow?");
+    while (max_ships < 1 || max_ships > 6) {
+        max_ships = prompt("Please input a value that is between 1 and 6 this time");
+    }
+    max_ships = parseInt(max_ships);
+    canvas = document.querySelector("#myCanvas");
+    context = canvas.getContext("2d");
+    let square = document.querySelectorAll('.square')
+    let grid = document.querySelector('.grid')
 
-  square.forEach(id => {
-      id.addEventListener('click', boat_sel_click)
-  })
-  draw();
+    square.forEach(id => {
+        id.addEventListener('click', boat_sel_click)
+    })
+    draw();
 }
 
 let turn = -1;
@@ -120,7 +120,7 @@ function fillSquaresPlayer2() {
 /**
  * @author blake richmeier
  * @version 2
- * Draws that current animation frame in according to what it tells to print
+ * @description Draws that current animation frame in according to what it tells to print
  */
 function draw() {
     context.canvas.width = window.innerWidth;
