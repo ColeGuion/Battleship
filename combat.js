@@ -7,6 +7,9 @@ let in_buffer = false
 let player_1_turn = false
 let player_2_turn = false
 let click = false
+let max = 89;
+let min = 0;
+let usedLocations = []; // array to track locations already guessed by AI 
 
 //arrays to track player 1's hits on a given target
 let p1_1 = []
@@ -42,7 +45,67 @@ function start_combat() {
 
 function ai_easy_turn()
 {
-  console.log("AI easy turn not implemented yet!");
+    rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+    for (let i = 0; i < usedLocations.length; i++) {
+        while (usedLocations[i] == rand_location) {
+            rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+            i = 0; // resets counter to cycle through array again to check for duplicates
+        }
+    }
+    // adds location to array after an unused one has been found
+    usedLocations.push(rand_location);
+
+    if (player1array[rand_location] == 'ship') {
+
+        player1array[rand_location] = 'hit';
+
+        if (player_ships_placed.player1.charAt(rand_location) == 1) {
+            p1_1 = p1_1 + 'a';
+            console.log(p1_1);
+        } else if (player_ships_placed.player1.charAt(rand_location) == 2) {
+            p1_2 = p1_2 + 'a';
+            console.log(p1_2);
+        } else if (player_ships_placed.player1.charAt(rand_location) == 3) {
+            p1_3 = p1_3 + 'a';
+            console.log(p1_3);
+        } else if (player_ships_placed.player1.charAt(rand_location) == 4) {
+            p1_4 = p1_4 + 'a';
+            console.log(p1_4);
+        } else if (player_ships_placed.player1.charAt(rand_location) == 5) {
+            p1_5 = p1_5 + 'a';
+            console.log("p1_6", p1_5);
+        } else if (player_ships_placed.player1.charAt(rand_location) == 6) {
+            p1_6 = p1_6 + 'a';
+            console.log("p1_6", p1_6);
+        }
+
+        var image = document.createElement('img');
+        image.src = 'images/fire.png';
+        document.getElementById(i).innerHTML = '';
+        document.getElementById(i).appendChild(image);
+    } else if (player1array[rand_location] == 'sunk') {
+        var image = document.createElement('img');
+        image.src = 'images/sunken.png';
+        document.getElementById(this.id).innerHTML = '';
+        document.getElementById(this.id).appendChild(image);
+    } else {
+        player1array[rand_location] = 'miss';
+        var image = document.createElement('img');
+        image.src = 'images/water.png';
+        document.getElementById(rand_location).innerHTML = '';
+        document.getElementById(rand_location).appendChild(image);
+    }
+
+    // Check game over and sunk ships
+    check_game_over_player_1()
+    checkSunk()
+
+    // Update player 1 board and ships
+    showPlayer1board()
+    showPlayer1ships()
+
+    // Reset click
+    click = false;
 }
 
 function ai_medium_turn()
