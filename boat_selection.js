@@ -77,10 +77,6 @@ function ai_boat_sel() {
             }
             for (let j = 0; j < num_of_ships; j++) {
                 let location = getShipLocation()[0] + (getShipLocation()[1] * j);
-                if (location === null) {
-                    console.log("null");
-                    ai_boat_sel();
-                }
                 store_ship(location);
                 var shipImage = document.createElement('img');
                 shipImage.src = 'images/ship' + num_of_ships + '.png';
@@ -97,6 +93,8 @@ function ai_boat_sel() {
 
 /**
  * @author James Barnett
+ * @param num1 - initial location for ship
+ * @param num2 - direction of ship
  * @see ai_boat_sel() for function declaration
  * @return {void}
  * @description Function that sets initial ship placement of AI's current ship and its direction in case it needs to reference back to the initial location
@@ -114,6 +112,19 @@ function setShipLocation(num1, num2) {
  */
 function getShipLocation() {
     return [initial_location, direction];
+}
+
+/**
+ * @author James Barnett
+ * @param num - location on the board
+ * @see ai_boat_sel() for function declaration
+ * @return {boolean}
+ * @description Function checks player2array for ship locations
+ */
+function checkShip(num) {
+    if (player2array[num - 90] == 'ship') {
+        return false;
+    } return true;
 }
 
 /**
