@@ -29,26 +29,25 @@ let player_ships_placed = {
 function ai_boat_sel() {
     is_player_one = false;
     in_boat_selection = true;
-    let left = -1; // ship goes left from starting block
-    let right = 1;
-    let up = -10; // ship goes up from starting block
-    let down = 10;
-    let min = 90; // minimum grid location for ship on AI's board
-    let max = 179; // maximum grid location for ship on AI's board
-    
+    const left = -1; // ship goes left from starting block
+    const right = 1;
+    const up = -10; // ship goes up from starting block
+    const down = 10;
+    const min = 90; // minimum grid location for ship on AI's board
+    const max = 179; // maximum grid location for ship on AI's board
+
     if (in_boat_selection) {
         let rand_location = Math.floor(Math.random() * (max - min + 1) + min); // gets a random location on the board that is inclusive of the min and max value
         let dir = [left, right, up, down][Math.floor(Math.random() * (3 - 0 + 1) + 0)]; // picks direction for the ship
-        while (valid_first_block(rand_location) == false) { // if the random location chosen is invalid, find a new location
+        while (valid_first_block(rand_location) === false || valid_first_block(rand_location) === undefined) { // if the random location chosen is invalid, find a new location
             console.log("while loop working");
             rand_location = Math.floor(Math.random() * (max - min + 1) + min);
         }
-
         setShipLocation(rand_location, dir);
         console.log("random location: " + getShipLocation()[0]);
         console.log("direction: " + getShipLocation()[1]);
         // For placement of first ship (1x1)
-        if (!first_turn_already_a_ship_there(rand_location) && valid_first_block(rand_location) && boat_first_click) { 
+        if (!first_turn_already_a_ship_there(rand_location) && valid_first_block(rand_location) && boat_first_click) {
             store_ship(rand_location);
             var shipImage = document.createElement('img');
             shipImage.src = 'images/ship' + num_of_ships + '.png'; // draws colored square to represent 1xN ship
@@ -56,62 +55,43 @@ function ai_boat_sel() {
             ship_inc++;
             boat_first_click = false;
         } // for every other ship placement
-        else if (ship_inc <= num_of_ships && boat_check_valid_move(getShipLocation()[0])) {
+        else if (ship_inc <= num_of_ships && valid_first_block(getShipLocation()[0])) {
             let count = 0;
             for (let i = 0; i < num_of_ships; i++) {
                 console.log("Ship " + num_of_ships);
+                console.log("Adjusted value: " + (getShipLocation()[0] + (getShipLocation()[1] * i)));
+                console.log(checkShip(getShipLocation()[0] + (getShipLocation()[1] * i)));
                 // if the entire length of the ship won't be valid, find a new starting location for the ship. Reset i to 0 to interate through and check the new location is valid
-                if (boat_check_valid_move(getShipLocation()[0] + (getShipLocation()[1] * i)) == false && valid_first_block(getShipLocation()[0] + (getShipLocation()[1] * i)) == false) {
+                if (checkShip(getShipLocation()[0] + (getShipLocation()[1] * i)) === false) {
                     rand_location = Math.floor(Math.random() * (max - min + 1) + min);
                     setShipLocation(rand_location, getShipLocation()[1]);
+                    console.log("new random location: " + rand_location);
                     i = 0;
                 }
-                count++;
-                // if no valid location can be found with the given direction, try the other direction
-                if (count == 7) {
-                    console.log("working1");
-                    dir = getShipLocation()[1] * (-1);
-                    setShipLocation(getShipLocation()[0], dir);
-                    console.log(getShipLocation()[1]);
-                }
-                // if no valid location can still be found, switches from horizontal to vertical and vice versa
-                else if (count == 14) {
-                    console.log("working2");
-                    if (Math.abs(dir) == 1) {
-                        dir = 10;
-                    } else {
-                        dir = 1;
-                    }
-                    setShipLocation(getShipLocation()[0], dir);
-                    console.log(getShipLocation()[1]);
-                }
-                // if no valid location can still be found, switch directions of changed orientation 
-                else if (count == 21) {
-                    console.log("working3");
-                    if (Math.abs(dir) == 1) {
-                        dir = -10;
-                    } else {
-                        dir = -1;
-                    }
-                    setShipLocation(getShipLocation()[0], dir);
-                    console.log(getShipLocation()[1]);
+                if (valid_first_block(getShipLocation()[0] + (getShipLocation()[1] * i)) === false) {
+                    rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+                    setShipLocation(rand_location, getShipLocation()[1]);
+                    console.log("new random location2: " + rand_location);
+                    i = 0;
                 }
             }
             for (let j = 0; j < num_of_ships; j++) {
-                let location = rand_location + (getShipLocation()[1] * j);
+                let location = getShipLocation()[0] + (getShipLocation()[1] * j);
+                if (location === null) {
+                    console.log("null");
+                    ai_boat_sel();
+                }
                 store_ship(location);
                 var shipImage = document.createElement('img');
                 shipImage.src = 'images/ship' + num_of_ships + '.png';
                 document.getElementById(location).appendChild(shipImage);
             }
             ship_inc++;
-            
         }
         if (ship_inc == num_of_ships + 1) {
             ask_more_ships();
             document.getElementById("yes_button").click();
         }
-        
     }
 }
 
