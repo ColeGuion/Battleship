@@ -40,6 +40,74 @@ function start_combat() {
     console.log("called buffer")
 }
 
+function ai_easy_turn()
+{
+  console.log("AI easy turn not implemented yet!");
+}
+
+function ai_medium_turn()
+{
+  console.log("AI medium turn not implemented yet!");
+}
+
+
+/**
+ * @author Konrad Kahnert
+ * @return void
+ * @description AI searches for a player ship tile and hits it
+ */
+function ai_hard_turn()
+{
+  // Loop through player 1 tiles until a ship tile is found
+  for (let i = 0; i < player1array.length; i++)
+  {
+    if (player1array[i] == 'ship')
+    {
+      // Register the hit
+      player1array[i] = 'hit'
+
+      if (player_ships_placed.player1.charAt(parseInt(i)) == 1) {
+          p1_1 = p1_1 + 'a'
+          console.log(p1_1)
+      } else if (player_ships_placed.player1.charAt(parseInt(i)) == 2) {
+          p1_2 = p1_2 + 'a'
+          console.log(p1_2)
+      } else if (player_ships_placed.player1.charAt(parseInt(i)) == 3) {
+          p1_3 = p1_3 + 'a'
+          console.log(p1_3)
+      } else if (player_ships_placed.player1.charAt(parseInt(i)) == 4) {
+          p1_4 = p1_4 + 'a'
+          console.log(p1_4)
+      } else if (player_ships_placed.player1.charAt(parseInt(i)) == 5) {
+          p1_5 = p1_5 + 'a'
+          console.log("p1_6", p1_5)
+      } else if (player_ships_placed.player1.charAt(parseInt(i)) == 6) {
+          p1_6 = p1_6 + 'a'
+          console.log("p1_6", p1_6)
+      }
+
+      var image = document.createElement('img')
+      image.src = 'images/fire.png'
+      document.getElementById(i).innerHTML = ''
+      document.getElementById(i).appendChild(image)
+
+      // Break the loop
+      break;
+    }
+  }
+
+  // Check game over and sunk ships
+  check_game_over_player_1()
+  checkSunk()
+
+  // Update player 1 board and ships
+  showPlayer1board()
+  showPlayer1ships()
+
+  // Reset click
+  click = false;
+}
+
 /**
  * @author blake richmeier
  * @version 10
@@ -284,7 +352,26 @@ function showPlayer1ships() {
     player_two_turn_button.addEventListener("click", () => {
         if (click) {
             player_1_turn = false
-            buffer()
+
+            if (is_ai_game)
+            {
+              if (difficulty == 1)
+              {
+                ai_easy_turn();
+              }
+              else if (difficulty == 2)
+              {
+                ai_medium_turn();
+              }
+              else if (difficulty == 3)
+              {
+                ai_hard_turn();
+              }
+            }
+            else {
+              buffer();
+            }
+
             body.removeChild(player_two_turn_button)
         }
     })

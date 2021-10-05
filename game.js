@@ -5,8 +5,8 @@ let is_ai_game = false;
 let difficulty = 0; // 1 = easy, 2 = medium, 3 = hard
 
 /**
- * @author blake richmeier
- * @version 2
+ * @author Konrad Kahnert
+ * @return void
  * @description checks for dom content and then prompts user to select between playing vs player or AI
  */
 document.addEventListener('DOMContentLoaded', () => {
@@ -71,7 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 })
 
-// Gets number of ships and starts the game
+/**
+ * @author blake richmeier
+ * @return void
+ * @description Gets number of ships from the user, then starts the game
+ */
 function start_game()
 {
     max_ships = prompt("How many ships do you want to allow?");
