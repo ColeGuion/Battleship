@@ -35,6 +35,7 @@ function ai_boat_sel() {
     const down = 10;
     const min = 90; // minimum grid location for ship on AI's board
     const max = 179; // maximum grid location for ship on AI's board
+    let locationArray = []; // array that holds a ship's proposed coordinates
 
     if (in_boat_selection) {
         let rand_location = Math.floor(Math.random() * (max - min + 1) + min); // gets a random location on the board that is inclusive of the min and max value
@@ -74,14 +75,24 @@ function ai_boat_sel() {
                     i = 0;
                 }
             }
-            for (let j = 0; j < num_of_ships; j++) {
-                let location = getShipLocation()[0] + (getShipLocation()[1] * j);
-                store_ship(location);
-                var shipImage = document.createElement('img');
-                shipImage.src = 'images/ship' + num_of_ships + '.png';
-                document.getElementById(location).appendChild(shipImage);
+            for (let i = 0; i < num_of_ships; i++) {
+                let location = getShipLocation()[0] + (getShipLocation()[1] * i);
+                locationArray[i] = location;
             }
-            ship_inc++;
+            if (shipWrap(locationArray) !== false) {
+                console.log("ship wrap returned true");
+                for (let i = 0; i < num_of_ships; i++) {
+                    store_ship(locationArray[i]);
+                    var shipImage = document.createElement('img');
+                    shipImage.src = 'images/ship' + num_of_ships + '.png';
+                    document.getElementById(locationArray[i]).appendChild(shipImage);
+                }
+                ship_inc++;
+            } else if (shipWrap(locationArray) === false) {
+                console.log("ship wrap returned false");
+                ai_boat_sel();
+            }
+            
         }
         if (ship_inc == num_of_ships + 1) {
             ask_more_ships();
@@ -123,6 +134,28 @@ function getShipLocation() {
 function checkShip(num) {
     if (player2array[num - 90] == 'ship') {
         return false;
+    } return true;
+}
+
+/**
+ * @author James Barnett
+ * @param params - an array of intended locations for a ship to go
+ * @see ai_boat_sel() for function declaration
+ * @return {boolean}
+ * @description Function checks incoming array of a ship's desired coordinate and checks to ensure the ship won't wrap to the other side
+ */
+function shipWrap(params) {
+    console.log("locationArray: " + params);
+    for (let i = 0; i < params.length; i++) {
+        if (params[i] % 10 == 9) { // if a ship is placed in column J...
+            if (params[i + 1] % 10 == 0) { // if the same ship is then placed in column A...
+                return false;
+            }
+        } else if (params[i] % 10 == 0) { // if a ship is placed in column A...
+            if (params[i + 1] % 10 == 9) { // if the same ship is then placed in column J...
+                return false;
+            }
+        }
     } return true;
 }
 
