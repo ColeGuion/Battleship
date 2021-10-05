@@ -2,6 +2,7 @@ let canvas; //global canvas
 let context; //global context
 let is_player_one = true; //bool to track current player
 let is_ai_game = false;
+let difficulty = 0; // 1 = easy, 2 = medium, 3 = hard
 
 /**
  * @author blake richmeier
@@ -10,30 +11,64 @@ let is_ai_game = false;
  */
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Initialize buttons
-  play_vs_human_button = document.createElement("play_vs_human_button");
-  play_vs_human_button.innerHTML = "Play Against Human";
-  body = document.getElementsByTagName("body")[0];
-  body.appendChild(play_vs_human_button);
+    // Initialize buttons
+    play_vs_human_button = document.createElement("play_vs_human_button");
+    play_vs_human_button.innerHTML = "Play Against Human";
+    body = document.getElementsByTagName("body")[0];
+    body.appendChild(play_vs_human_button);
 
-  play_vs_ai_button = document.createElement("play_vs_ai_button");
-  play_vs_ai_button.innerHTML = "Play Against AI";
-  body.appendChild(play_vs_ai_button);
+    play_vs_ai_button = document.createElement("play_vs_ai_button");
+    play_vs_ai_button.innerHTML = "Play Against AI";
+    body.appendChild(play_vs_ai_button);
 
-  // Define button behavior
-  play_vs_human_button.addEventListener("click", () => {
-    body.removeChild(play_vs_human_button);
-    body.removeChild(play_vs_ai_button);
-    is_ai_game = false;
-    start_game();
-  })
+    easy_button = document.createElement("easy_button");
+    easy_button.innerHTML = "Easy";
 
-  play_vs_ai_button.addEventListener("click", () => {
-    body.removeChild(play_vs_ai_button);
-    body.removeChild(play_vs_human_button);
-    is_ai_game = true;
-    start_game();
-  })
+    medium_button = document.createElement("medium_button");
+    medium_button.innerHTML = "Medium";
+
+    hard_button = document.createElement("hard_button");
+    hard_button.innerHTML = "Hard";
+
+    // Define button behavior
+    play_vs_human_button.addEventListener("click", () => {
+        body.removeChild(play_vs_human_button);
+        body.removeChild(play_vs_ai_button);
+        is_ai_game = false;
+        start_game();
+    })
+
+    play_vs_ai_button.addEventListener("click", () => {
+        body.removeChild(play_vs_ai_button);
+        body.removeChild(play_vs_human_button);
+        is_ai_game = true;
+
+        body.appendChild(easy_button);
+        body.appendChild(medium_button);
+        body.appendChild(hard_button);
+
+        easy_button.addEventListener("click", () => {
+            body.removeChild(easy_button);
+            body.removeChild(medium_button);
+            body.removeChild(hard_button);
+            difficulty = 1;
+            start_game();
+        })
+        medium_button.addEventListener("click", () => {
+            body.removeChild(easy_button);
+            body.removeChild(medium_button);
+            body.removeChild(hard_button);
+            difficulty = 2;
+            start_game();
+        })
+        hard_button.addEventListener("click", () => {
+            body.removeChild(easy_button);
+            body.removeChild(medium_button);
+            body.removeChild(hard_button);
+            difficulty = 3;
+            start_game();
+        })
+    })
 })
 
 // Gets number of ships and starts the game

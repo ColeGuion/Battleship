@@ -27,7 +27,7 @@ html, body {
     align-content: center;
     width: 610px;
     height: 550px;
-    margin-left: 1000;
+    margin-left: 1000px;
     margin-top: -550px;
     z-index: 1;
 }
@@ -107,5 +107,44 @@ play_vs_ai_button {
     font-weight: bold;
     font-size: 20px;
     background: rgb(241, 97, 14);
+    border: none;
+}
+
+easy_button {
+    position: absolute;
+    top: 210px;
+    left: 700px;
+    width: 8%;
+    height: 5%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background: rgb(76 255 0);
+    border: none;
+}
+
+medium_button {
+    position: absolute;
+    top: 260px;
+    left: 700px;
+    width: 8%;
+    height: 5%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background: rgb(255 106 0);
+    border: none;
+}
+
+hard_button {
+    position: absolute;
+    top: 310px;
+    left: 700px;
+    width: 8%;
+    height: 5%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background: rgb(255 0 0);
     border: none;
 }
