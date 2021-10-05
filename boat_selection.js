@@ -56,7 +56,6 @@ function ai_boat_sel() {
             boat_first_click = false;
         } // for every other ship placement
         else if (ship_inc <= num_of_ships && valid_first_block(getShipLocation()[0])) {
-            let count = 0;
             for (let i = 0; i < num_of_ships; i++) {
                 console.log("Ship " + num_of_ships);
                 console.log("Adjusted value: " + (getShipLocation()[0] + (getShipLocation()[1] * i)));
