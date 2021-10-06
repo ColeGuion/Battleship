@@ -184,8 +184,8 @@ ships_sunk2
 
 player_one_turn_button {
     position: absolute;
-    top: 210px;
-    left: 700px;
+    top: 500px;
+    left: 725px;
     width: 8%;
     height: 8%;
     text-align: center;
@@ -197,8 +197,8 @@ player_one_turn_button {
 
 leave_buffer_button {
     position: absolute;
-    top: 210px;
-    left: 700px;
+    top: 500px;
+    left: 725px;
     width: 8%;
     height: 8%;
     text-align: center;
@@ -210,8 +210,8 @@ leave_buffer_button {
 
 player_two_turn_button {
     position: absolute;
-    top: 210px;
-    left: 700px;
+    top: 500px;
+    left: 725px;
     width: 8%;
     height: 8%;
     text-align: center;
