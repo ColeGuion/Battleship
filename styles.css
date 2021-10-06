@@ -34,8 +34,8 @@ html, body {
 
 yes_button {
     position: absolute;
-    top: 210px;
-    left: 695px;
+    top: 500px;
+    left: 725px;
     width: 8%;
     height: 8%;
     text-align: center;
@@ -224,7 +224,7 @@ player_two_turn_button {
 play_vs_human_button {
     position: absolute;
     top: 100px;
-    left: 700px;
+    left: 620px;
     width: 8%;
     height: 8%;
     text-align: center;
@@ -236,8 +236,8 @@ play_vs_human_button {
 
 play_vs_ai_button {
     position: absolute;
-    top:  210px;
-    left: 700px;
+    top:  100px;
+    left: 850px;
     width: 8%;
     height: 8%;
     text-align: center;
@@ -249,7 +249,7 @@ play_vs_ai_button {
 
 easy_button {
     position: absolute;
-    top: 210px;
+    top: 50px;
     left: 700px;
     width: 8%;
     height: 5%;
@@ -262,7 +262,7 @@ easy_button {
 
 medium_button {
     position: absolute;
-    top: 260px;
+    top: 100px;
     left: 700px;
     width: 8%;
     height: 5%;
@@ -275,7 +275,7 @@ medium_button {
 
 hard_button {
     position: absolute;
-    top: 310px;
+    top: 150px;
     left: 700px;
     width: 8%;
     height: 5%;
