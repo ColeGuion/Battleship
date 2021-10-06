@@ -45,6 +45,143 @@ yes_button {
     border: none;
 }
 
+scoreBoard {
+    position: absolute;
+    top: 200px;
+    left: 40%;
+    width: 360px;
+    height: 60px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 50px;
+    background: rgb(241, 97, 14);
+    border: solid;
+    border-color: black;
+    border-width: 10px;
+}
+
+player
+{
+    position: absolute;
+    top: 275px;
+    left: 40%;
+    width: 185.25px;
+    height: 40px;
+    background: rgb(241, 97, 14);
+    border-bottom: 8px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+player2
+{
+    position: absolute;
+    top: 275px;
+    left: 804.5px;
+    width: 185.25px;
+    height: 40px;
+    background: rgb(241, 97, 14);
+    border-bottom: 8px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+hit
+{
+    position: absolute;
+    top: 323px;
+    left: 40%;
+    width: 185.25px;
+    height: 35px;
+    background: rgb(241, 97, 14);
+    border-top: 0px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+    font-size: 25px;
+}
+
+hit2
+{
+    position: absolute;
+    top: 323px;
+    left: 804.5px;
+    width: 185.25px;
+    height: 35px;
+    background: rgb(241, 97, 14);
+    border-top: 0px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+    font-size: 25px;
+}
+
+miss
+{
+    position: absolute;
+    top: 361px;
+    left: 40%;
+    width: 185.25px;
+    height: 35px;
+    background: rgb(241, 97, 14);
+    border-top: 0px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+    font-size: 25px;
+}
+
+miss2
+{
+    position: absolute;
+    top: 361px;
+    left: 804.5px;
+    width: 185.25px;
+    height: 35px;
+    background: rgb(241, 97, 14);
+    border-top: 0px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+    font-size: 25px;
+}
+
+ships_sunk
+{
+    position: absolute;
+    top: 398px;
+    left: 40%;
+    width: 185.25px;
+    height: 35px;
+    background: rgb(241, 97, 14);
+    border-top: 0px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+    font-size: 25px;
+}
+
+ships_sunk2
+{
+    position: absolute;
+    top: 398px;
+    left: 804.5px;
+    width: 185.25px;
+    height: 35px;
+    background: rgb(241, 97, 14);
+    border-top: 0px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+    font-size: 25px;
+}
+
 player_one_turn_button {
     position: absolute;
     top: 210px;
