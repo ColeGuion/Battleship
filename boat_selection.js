@@ -29,58 +29,57 @@ let player_ships_placed = {
 function ai_boat_sel() {
     is_player_one = false;
     in_boat_selection = true;
-    const left = -1; // ship goes left from starting block
+
+    // directional variables
+    const left = -1; 
     const right = 1;
-    const up = -10; // ship goes up from starting block
+    const up = -10; 
     const down = 10;
-    const min = 90; // minimum grid location for ship on AI's board
-    const max = 179; // maximum grid location for ship on AI's board
-    let locationArray = []; // array that holds a ship's proposed coordinates
+
+    // max and min grid locations
+    const min = 90; 
+    const max = 179;
+
+    // array that holds a ship's proposed coordinates
+    let locationArray = []; 
 
     if (in_boat_selection) {
-        let rand_location = Math.floor(Math.random() * (max - min + 1) + min); // gets a random location on the board that is inclusive of the min and max value
-        let dir = [left, right, up, down][Math.floor(Math.random() * (3 - 0 + 1) + 0)]; // picks direction for the ship
-        while (valid_first_block(rand_location) === false || valid_first_block(rand_location) === undefined) { // if the random location chosen is invalid, find a new location
-            console.log("while loop working");
+        // gets a random location on the board that is inclusive of the min and max value
+        let rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+
+        // picks direction for the ship
+        let dir = [left, right, up, down][Math.floor(Math.random() * (3 - 0 + 1) + 0)];
+
+        // if the random location chosen is invalid, find a new location
+        while (valid_first_block(rand_location) === false || valid_first_block(rand_location) === undefined) { 
             rand_location = Math.floor(Math.random() * (max - min + 1) + min);
         }
+
+        // store the location and direction
         setShipLocation(rand_location, dir);
-        console.log("random location: " + getShipLocation()[0]);
-        console.log("direction: " + getShipLocation()[1]);
-        // For placement of first ship (1x1)
-        if (!first_turn_already_a_ship_there(rand_location) && valid_first_block(rand_location) && boat_first_click) {
-            store_ship(rand_location);
-            var shipImage = document.createElement('img');
-            shipImage.src = 'images/ship' + num_of_ships + '.png'; // draws colored square to represent 1xN ship
-            document.getElementById(rand_location).appendChild(shipImage);
-            ship_inc++;
-            boat_first_click = false;
-        } // for every other ship placement
-        else if (ship_inc <= num_of_ships && valid_first_block(getShipLocation()[0])) {
+
+        if (ship_inc <= num_of_ships && valid_first_block(getShipLocation()[0])) {
             for (let i = 0; i < num_of_ships; i++) {
-                console.log("Ship " + num_of_ships);
-                console.log("Adjusted value: " + (getShipLocation()[0] + (getShipLocation()[1] * i)));
-                console.log(checkShip(getShipLocation()[0] + (getShipLocation()[1] * i)));
-                // if the entire length of the ship won't be valid, find a new starting location for the ship. Reset i to 0 to interate through and check the new location is valid
+                // if the entire length of the ship won't be valid, find a new starting location for the ship.
+                // Reset i to 0 to iterate through and check if the new location is valid
                 if (checkShip(getShipLocation()[0] + (getShipLocation()[1] * i)) === false) {
                     rand_location = Math.floor(Math.random() * (max - min + 1) + min);
                     setShipLocation(rand_location, getShipLocation()[1]);
-                    console.log("new random location: " + rand_location);
                     i = 0;
                 }
                 if (valid_first_block(getShipLocation()[0] + (getShipLocation()[1] * i)) === false) {
                     rand_location = Math.floor(Math.random() * (max - min + 1) + min);
                     setShipLocation(rand_location, getShipLocation()[1]);
-                    console.log("new random location2: " + rand_location);
                     i = 0;
                 }
             }
+            // store the proposed coordinates in locationArray
             for (let i = 0; i < num_of_ships; i++) {
                 let location = getShipLocation()[0] + (getShipLocation()[1] * i);
                 locationArray[i] = location;
             }
+            // if the ship does not wrap around and is a valid placement, place it on the board
             if (shipWrap(locationArray) !== false) {
-                console.log("ship wrap returned true");
                 for (let i = 0; i < num_of_ships; i++) {
                     store_ship(locationArray[i]);
                     var shipImage = document.createElement('img');
@@ -88,11 +87,10 @@ function ai_boat_sel() {
                     document.getElementById(locationArray[i]).appendChild(shipImage);
                 }
                 ship_inc++;
-            } else if (shipWrap(locationArray) === false) {
-                console.log("ship wrap returned false");
+            } // start over if the ship wraps around to the other side
+            else if (shipWrap(locationArray) === false) {
                 ai_boat_sel();
             }
-            
         }
         if (ship_inc == num_of_ships + 1) {
             ask_more_ships();
@@ -145,14 +143,13 @@ function checkShip(num) {
  * @description Function checks incoming array of a ship's desired coordinate and checks to ensure the ship won't wrap to the other side
  */
 function shipWrap(params) {
-    console.log("locationArray: " + params);
     for (let i = 0; i < params.length; i++) {
         if (params[i] % 10 == 9) { // if a ship is placed in column J...
-            if (params[i + 1] % 10 == 0) { // if the same ship is then placed in column A...
+            if (params[i + 1] % 10 == 0) { // and the same ship is then placed in column A...
                 return false;
             }
         } else if (params[i] % 10 == 0) { // if a ship is placed in column A...
-            if (params[i + 1] % 10 == 9) { // if the same ship is then placed in column J...
+            if (params[i + 1] % 10 == 9) { // and the same ship is then placed in column J...
                 return false;
             }
         }
@@ -213,8 +210,6 @@ function boat_sel_click() {
                     context.fillText("to the AI?", 740, 175);
                     ask_more_ships();
                 }
-                
-                
             }
         } else if (ship_inc == num_of_ships + 1) {
             if (first_button) {
