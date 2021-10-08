@@ -46,43 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     hard_button = document.createElement("hard_button");
     hard_button.innerHTML = "Hard";
 
-    //This is the start of the scoreboard css
-    scoreBoard = document.createElement("scoreBoard");
-    scoreBoard.innerHTML = "ScoreBoard";
-    body.appendChild(scoreBoard);
-
-    player = document.createElement("player");
-    player.innerHTML = "Player 1";
-    body.appendChild(player);
-
-    player2 = document.createElement("player2");
-    player2.innerHTML = "Player 2";
-    body.appendChild(player2);
-
-    hit = document.createElement("hit");
-    hit.innerHTML = "Hits: " + playerOne.hits;
-    body.appendChild(hit);
-
-    hit2 = document.createElement("hit2");
-    hit2.innerHTML = "Hits: " + playerTwo.hits;
-    body.appendChild(hit2);
-
-    miss = document.createElement("miss");
-    miss.innerHTML = "Misses: " + playerOne.misses;
-    body.appendChild(miss);
-
-    miss2 = document.createElement("miss2");
-    miss2.innerHTML = "Misses: " + playerTwo.misses;
-    body.appendChild(miss2);
-
-    ships_sunk = document.createElement("ships_sunk");
-    ships_sunk.innerHTML = "Ships Sunk: " + playerOne.shipsSunk;
-    body.appendChild(ships_sunk);
-
-    ships_sunk2 = document.createElement("ships_sunk2");
-    ships_sunk2.innerHTML = "Ships Sunk: " + playerTwo.shipsSunk;
-    body.appendChild(ships_sunk2);
-
 
     // Define button behavior
     play_vs_human_button.addEventListener("click", () => {
