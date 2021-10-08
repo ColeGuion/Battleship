@@ -203,5 +203,20 @@
     <script type="text/javascript" src="game.js"></script>
     <script type="text/javascript" src="boat_selection.js"></script>
     <script type="text/javascript" src="combat.js"></script>
+
+    <script>
+        let windowScalar = screen.availWidth/window.innerWidth;
+
+        let windowShit = window.innerWidth / 1.735;
+
+        let center = screen.availWidth / 2;
+        let grid2Edge = center + (center/4);
+        console.log(center);
+        console.log(grid2Edge);
+
+        let grid = document.querySelector('.grid2');
+        grid.style.setProperty('--leftmost-edge', grid2Edge + 'px');
+    </script>
+
 </body>
 </HTML>

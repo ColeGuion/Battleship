@@ -43,9 +43,15 @@ function start_combat() {
     console.log("called buffer")
 }
 
+/**
+ * @author James Barnett
+ * @return void
+ * @description AI randomly guesses tiles to shoot
+ */
 function ai_easy_turn()
 {
     rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+    // finds a location it hasn't tried yet
     for (let i = 0; i < usedLocations.length; i++) {
         while (usedLocations[i] == rand_location) {
             rand_location = Math.floor(Math.random() * (max - min + 1) + min);
@@ -189,6 +195,12 @@ function checkFlip() {
             if (this.id <= 89) {
                 if (player1array[this.id] == 'ship') {
 
+                    //Records and Updates hits for player two
+                    playerTwo.hits = playerTwo.hits + 1;
+                    hit2 = document.createElement("hit2");
+                    hit2.innerHTML = "Hits: " + playerTwo.hits;
+                    body.appendChild(hit2);
+
                     player1array[this.id] = 'hit'
 
                     if (player_ships_placed.player1.charAt(parseInt(this.id)) == 1) {
@@ -222,6 +234,13 @@ function checkFlip() {
                     document.getElementById(this.id).innerHTML = ''
                     document.getElementById(this.id).appendChild(image)
                 } else {
+
+                    //Records and Updates misses for player two
+                    playerTwo.misses = playerTwo.misses + 1;
+                    miss2 = document.createElement("miss2");
+                    miss2.innerHTML = "Misses: " + playerTwo.misses;
+                    body.appendChild(miss2);
+
                     player1array[this.id] = 'miss'
                     var image = document.createElement('img')
                     image.src = 'images/water.png'
@@ -246,6 +265,12 @@ function checkFlip() {
         } else if (player_1_turn) {
             if (this.id > 89) {
                 if (player2array[this.id - 90] == 'ship') {
+
+                    //Records and Updates hits for player one
+                    playerOne.hits = playerOne.hits + 1;
+                    hit = document.createElement("hit");
+                    hit.innerHTML = "Hits: " + playerOne.hits;
+                    body.appendChild(hit);
 
                     player2array[this.id - 90] = 'hit'
 
@@ -281,6 +306,13 @@ function checkFlip() {
                     document.getElementById(this.id).appendChild(image)
                     console.log("here5")
                 } else {
+
+                    //Records and Updates misses for player one
+                    playerOne.misses = playerOne.misses + 1;
+                    miss = document.createElement("miss");
+                    miss.innerHTML = "Misses: " + playerOne.misses;
+                    body.appendChild(miss);
+
                     player2array[this.id - 90] = 'miss'
                     var image = document.createElement('img')
                     image.src = 'images/water.png'
