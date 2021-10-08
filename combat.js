@@ -68,7 +68,8 @@ function ai_easy_turn()
     usedLocations.push(rand_location);
 
     if (player1array[rand_location] == 'ship') {
-
+        amtHit = amtHit+1;
+        document.getElementById("hitcount2").innerHTML = amtHit;
         player1array[rand_location] = 'hit';
 
         if (player_ships_placed.player1.charAt(rand_location) == 1) {
@@ -101,6 +102,8 @@ function ai_easy_turn()
         document.getElementById(this.id).innerHTML = '';
         document.getElementById(this.id).appendChild(image);
     } else {
+        amtMiss = amtMiss+1;
+        document.getElementById("misscount2").innerHTML = amtMiss;
         player1array[rand_location] = 'miss';
         var image = document.createElement('img');
         image.src = 'images/water.png';
@@ -139,6 +142,8 @@ function ai_hard_turn()
     if (player1array[i] == 'ship')
     {
       // Register the hit
+      amtHit = amtHit+1;
+      document.getElementById("hitcount2").innerHTML = amtHit;
       player1array[i] = 'hit'
 
       if (player_ships_placed.player1.charAt(parseInt(i)) == 1) {
