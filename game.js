@@ -215,7 +215,7 @@ function print_board() {
     context.font = "12pt Candara";
     for (let i = 0; i < 10; i++) {
         context.fillText(alph[i], 54.5 * (i + 1), 15);
-        context.fillText(alph[i], 1000 + (54.5 * (i + 1)), 15);
+        context.fillText(alph[i], 950 + (54.5 * (i + 1)), 15);
     }
 }
 
