@@ -9,6 +9,12 @@ let player_2_turn = false
 let click = false
 let max = 89;
 let min = 0;
+let amtHit = 0; //keeps track of player 1 ships hit
+let amtHit2 = 0; //keeps track of player 2 ships hit
+let amtMiss = 0; //keeps track of player 1 misses
+let amtMiss2 = 0; //keeps track of player 2 misses
+let amtSS = 0; //keeps track of player 1 ships sunk
+let amtSS2 = 0; //keeps track of player 2 ships sunk
 let usedLocations = []; // array to track locations already guessed by AI 
 
 //arrays to track player 1's hits on a given target
@@ -196,10 +202,8 @@ function checkFlip() {
                 if (player1array[this.id] == 'ship') {
 
                     //Records and Updates hits for player two
-                    playerTwo.hits = playerTwo.hits + 1;
-                    hit2 = document.createElement("hit2");
-                    hit2.innerHTML = "Hits: " + playerTwo.hits;
-                    body.appendChild(hit2);
+                    amtHit = amtHit+1;
+                    document.getElementById("hitcount2").innerHTML = amtHit;
 
                     player1array[this.id] = 'hit'
 
@@ -236,10 +240,8 @@ function checkFlip() {
                 } else {
 
                     //Records and Updates misses for player two
-                    playerTwo.misses = playerTwo.misses + 1;
-                    miss2 = document.createElement("miss2");
-                    miss2.innerHTML = "Misses: " + playerTwo.misses;
-                    body.appendChild(miss2);
+                    amtMiss = amtMiss+1;
+                    document.getElementById("misscount2").innerHTML = amtMiss;
 
                     player1array[this.id] = 'miss'
                     var image = document.createElement('img')
@@ -267,10 +269,8 @@ function checkFlip() {
                 if (player2array[this.id - 90] == 'ship') {
 
                     //Records and Updates hits for player one
-                    playerOne.hits = playerOne.hits + 1;
-                    hit = document.createElement("hit");
-                    hit.innerHTML = "Hits: " + playerOne.hits;
-                    body.appendChild(hit);
+                    amtHit2 = amtHit2+1;
+                    document.getElementById("hitcount").innerHTML = amtHit2;
 
                     player2array[this.id - 90] = 'hit'
 
@@ -306,13 +306,10 @@ function checkFlip() {
                     document.getElementById(this.id).appendChild(image)
                     console.log("here5")
                 } else {
-
                     //Records and Updates misses for player one
-                    playerOne.misses = playerOne.misses + 1;
-                    miss = document.createElement("miss");
-                    miss.innerHTML = "Misses: " + playerOne.misses;
-                    body.appendChild(miss);
-
+                    amtMiss2 = amtMiss2+1;
+                    document.getElementById("misscount").innerHTML = amtMiss2;
+                
                     player2array[this.id - 90] = 'miss'
                     var image = document.createElement('img')
                     image.src = 'images/water.png'
