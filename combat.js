@@ -16,6 +16,7 @@ let amtMiss2 = 0; //keeps track of player 2 misses
 let amtSS = 0; //keeps track of player 1 ships sunk
 let amtSS2 = 0; //keeps track of player 2 ships sunk
 let usedLocations = []; // array to track locations already guessed by AI 
+let arrChange = false;
 
 //arrays to track player 1's hits on a given target
 let p1_1 = []
@@ -33,12 +34,19 @@ let p2_4 = []
 let p2_5 = []
 let p2_6 = []
 
+//makes copy of arrays
+let arrP1 = []
+let arrP2 = []
+
+
 /**
  * @author blake richmeier
  * @version 2
  * the first function called by boat_selection.js to start the combat phase
  */
 function start_combat() {
+    arrP1 = [...player1array];
+    arrP2 = [...player2array];
     context.clearRect(0, 0, canvas.width, canvas.height)
     print_board2()
     square.forEach(id => {
@@ -119,6 +127,9 @@ function ai_easy_turn()
     showPlayer1board()
     showPlayer1ships()
 
+    //update ships sunk scoreboard
+    ship_sunk_SB();
+
     // Reset click
     click = false;
 }
@@ -183,7 +194,7 @@ function ai_hard_turn()
   // Update player 1 board and ships
   showPlayer1board()
   showPlayer1ships()
-
+  ship_sunk_SB();
   // Reset click
   click = false;
 }
@@ -349,6 +360,7 @@ function checkFlip() {
         context.fillText("You can only click 1 ", 715, 150);
         context.fillText("square per turn", 725, 175);
     }
+    ship_sunk_SB();
     check_game_over_player_1()
     check_game_over_player_2()
     checkSunk()
@@ -731,4 +743,47 @@ function check_game_over_player_2() {
         alert("Game over! Player 1 wins! Refresh to play again")
     }
 
+}
+
+/**
+ * @author Cole Guion
+ * @version 2
+ * this function checks if any ships have sunk from the last turn and if they have
+ * it updates the scoreboard
+ */
+function ship_sunk_SB() {
+    arrChange = false;
+        for (let i = 0; i < 90; i++) {
+            if (arrChange != true)
+            {
+                if (player1array[i] == 'sunk')
+                {
+                    if (arrP1[i] == 'sunk')
+                    {
+                        //nothing changed
+                    }
+                    else
+                    {
+                        arrChange = true;
+                        amtSS = amtSS+1;
+                        document.getElementById("ShipsS2").innerHTML = amtSS;
+                        arrP1 = [...player1array];
+                    }
+                }
+                if (player2array[i] == 'sunk')
+                {
+                    if (arrP2[i] == 'sunk')
+                    {
+                        //nothing changed
+                    }
+                    else
+                    {
+                        arrChange = true;
+                        amtSS2 = amtSS2+1;
+                        document.getElementById("ShipsS").innerHTML = amtSS2;
+                        arrP2 = [...player2array];
+                    }
+                }
+            }
+        }
 }
