@@ -17,6 +17,12 @@ let amtSS = 0; //keeps track of player 1 ships sunk
 let amtSS2 = 0; //keeps track of player 2 ships sunk
 let usedLocations = []; // array to track locations already guessed by AI 
 let arrChange = false;
+let ship_spotted = false;
+let changeDir = 0; //0 = left, 1 = right, 2 = top, 3 = bottom
+let usedSpot = false;
+let rand_location = 0;
+let orgLocation = 0;
+let firstTime = true;
 
 //arrays to track player 1's hits on a given target
 let p1_1 = []
@@ -76,8 +82,10 @@ function ai_easy_turn()
     usedLocations.push(rand_location);
 
     if (player1array[rand_location] == 'ship') {
+        //adds hit to scoreboard
         amtHit = amtHit+1;
         document.getElementById("hitcount2").innerHTML = amtHit;
+
         player1array[rand_location] = 'hit';
 
         if (player_ships_placed.player1.charAt(rand_location) == 1) {
@@ -110,8 +118,10 @@ function ai_easy_turn()
         document.getElementById(this.id).innerHTML = '';
         document.getElementById(this.id).appendChild(image);
     } else {
+        //adds miss to scoreboard
         amtMiss = amtMiss+1;
         document.getElementById("misscount2").innerHTML = amtMiss;
+
         player1array[rand_location] = 'miss';
         var image = document.createElement('img');
         image.src = 'images/water.png';
@@ -134,9 +144,234 @@ function ai_easy_turn()
     click = false;
 }
 
+/**
+ * @author Cole Guion
+ * @return void
+ * @description AI randomly guesses tiles to shoot, if it finds a ship it orthogonally checks each
+ * direction until a ship has been sunk
+ */
 function ai_medium_turn()
 {
-  console.log("AI medium turn not implemented yet!");
+    if (player1array[rand_location] == 'sunk')
+    {
+        ship_spotted = false;
+    }
+    //console.log("AI medium turn not implemented yet!");
+
+    //fires randomly until there is a ship spotted
+    if (ship_spotted == false) {
+        rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+        // finds a location it hasn't tried yet
+        for (let i = 0; i < usedLocations.length; i++) {
+            while (usedLocations[i] == rand_location) {
+                rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+                i = 0; // resets counter to cycle through array again to check for duplicates
+            }
+        }
+        // adds location to array after an unused one has been found
+        usedLocations.push(rand_location);
+        
+        if (player1array[rand_location] == 'ship') {
+            ship_spotted = true;
+            orgLocation = rand_location;
+            //adds hit to scoreboard
+            amtHit = amtHit+1;
+            document.getElementById("hitcount2").innerHTML = amtHit;
+
+            player1array[rand_location] = 'hit';
+
+            if (player_ships_placed.player1.charAt(rand_location) == 1) {
+                p1_1 = p1_1 + 'a';
+                console.log(p1_1);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 2) {
+                p1_2 = p1_2 + 'a';
+                console.log(p1_2);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 3) {
+                p1_3 = p1_3 + 'a';
+                console.log(p1_3);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 4) {
+                p1_4 = p1_4 + 'a';
+                console.log(p1_4);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 5) {
+                p1_5 = p1_5 + 'a';
+                console.log("p1_6", p1_5);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 6) {
+                p1_6 = p1_6 + 'a';
+                console.log("p1_6", p1_6);
+            }
+
+            var image = document.createElement('img');
+            image.src = 'images/fire.png';
+            document.getElementById(i).innerHTML = '';
+            document.getElementById(i).appendChild(image);
+        } else if (player1array[rand_location] == 'sunk') {
+            ship_spotted = false;
+            var image = document.createElement('img');
+            image.src = 'images/sunken.png';
+            document.getElementById(this.id).innerHTML = '';
+            document.getElementById(this.id).appendChild(image);
+        } else {
+            //adds miss to scoreboard
+            amtMiss = amtMiss+1;
+            document.getElementById("misscount2").innerHTML = amtMiss;
+            
+            player1array[rand_location] = 'miss';
+            var image = document.createElement('img');
+            image.src = 'images/water.png';
+            document.getElementById(rand_location).innerHTML = '';
+            document.getElementById(rand_location).appendChild(image);
+        }
+    }
+    else
+    {
+        //find location to go for
+        do {
+        if (changeDir == 0)
+        {
+            //to ensure it doesnt shoot off the map
+            if (rand_location == 0)
+            {
+                changeDir = changeDir+1;
+                firstTime = true;
+            }
+            //check left
+            rand_location = rand_location-1;
+        }
+        if (changeDir == 1)
+        {
+            if (rand_location == 90)
+            {
+                changeDir = changeDir+1;
+                firstTime = true;
+            }
+            //check right
+            if (firstTime == true)
+            {
+                rand_location = orgLocation+1;
+                firstTime = false;
+            }
+            else
+            {
+                rand_location = rand_location+1;
+            }
+        }
+        if (changeDir == 2)
+        {
+            if (rand_location <= 10)
+            {
+                changeDir = changeDir+1;
+                firstTime = true;
+            }
+            //check top
+            if (firstTime == true)
+            {
+                rand_location = orgLocation-10;
+                firstTime = false;
+            }
+            else
+            {
+                rand_location = rand_location-10;
+            }
+        }
+        if (changeDir == 3)
+        {
+            if (rand_location > 80)
+            {
+                changeDir = 0;
+                firstTime = true;
+            }
+            //check bottom
+            if (firstTime == true)
+            {
+                rand_location = orgLocation+10;
+                firstTime = false;
+            }
+            else
+            {
+                rand_location = rand_location+10;
+            }
+        }
+        usedSpot = false;
+        //check if location has been used
+        for (let i = 0; i < usedLocations.length; i++) {
+            if (usedLocations[i] == rand_location) {
+                usedSpot = true;
+            }
+        }
+    } while (usedSpot == true);
+    usedSpot = false;
+
+        // adds location to array after an unused one has been found
+        usedLocations.push(rand_location);
+        
+        if (player1array[rand_location] == 'ship') {
+
+            //adds hit to scoreboard
+            amtHit = amtHit+1;
+            document.getElementById("hitcount2").innerHTML = amtHit;
+            player1array[rand_location] = 'hit';
+
+            if (player_ships_placed.player1.charAt(rand_location) == 1) {
+                p1_1 = p1_1 + 'a';
+                console.log(p1_1);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 2) {
+                p1_2 = p1_2 + 'a';
+                console.log(p1_2);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 3) {
+                p1_3 = p1_3 + 'a';
+                console.log(p1_3);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 4) {
+                p1_4 = p1_4 + 'a';
+                console.log(p1_4);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 5) {
+                p1_5 = p1_5 + 'a';
+                console.log("p1_6", p1_5);
+            } else if (player_ships_placed.player1.charAt(rand_location) == 6) {
+                p1_6 = p1_6 + 'a';
+                console.log("p1_6", p1_6);
+            }
+            var image = document.createElement('img');
+            image.src = 'images/fire.png';
+            document.getElementById(i).innerHTML = '';
+            document.getElementById(i).appendChild(image);
+        } else if (player1array[rand_location] == 'sunk') {
+            ship_spotted = false;
+            changeDir = 0;
+            var image = document.createElement('img');
+            image.src = 'images/sunken.png';
+            document.getElementById(this.id).innerHTML = '';
+            document.getElementById(this.id).appendChild(image);
+        } else {
+            //adds miss to scoreboard
+            amtMiss = amtMiss+1;
+            document.getElementById("misscount2").innerHTML = amtMiss;
+            
+            //change direction to target
+            changeDir = changeDir+1;
+            firstTime = true;
+
+            player1array[rand_location] = 'miss';
+            var image = document.createElement('img');
+            image.src = 'images/water.png';
+            document.getElementById(rand_location).innerHTML = '';
+            document.getElementById(rand_location).appendChild(image);
+        }
+    }
+
+        // Check game over and sunk ships
+        check_game_over_player_1()
+        checkSunk()
+
+        // Update player 1 board and ships
+        showPlayer1board()
+        showPlayer1ships()
+
+        ship_check();
+        //update ships sunk scoreboard
+        ship_sunk_SB();
+
+        // Reset click
+        click = false;
 }
 
 
@@ -152,7 +387,7 @@ function ai_hard_turn()
   {
     if (player1array[i] == 'ship')
     {
-      // Register the hit
+      //adds hit to scoreboard
       amtHit = amtHit+1;
       document.getElementById("hitcount2").innerHTML = amtHit;
       player1array[i] = 'hit'
@@ -217,7 +452,7 @@ function checkFlip() {
             if (this.id <= 89) {
                 if (player1array[this.id] == 'ship') {
 
-                    //Records and Updates hits for player two
+                    //adds hit to scoreboard
                     amtHit = amtHit+1;
                     document.getElementById("hitcount2").innerHTML = amtHit;
 
@@ -782,6 +1017,46 @@ function ship_sunk_SB() {
                         amtSS2 = amtSS2+1;
                         document.getElementById("ShipsS").innerHTML = amtSS2;
                         arrP2 = [...player2array];
+                    }
+                }
+            }
+        }
+}
+
+
+/**
+ * @author Cole Guion
+ * @version 2
+ * this function is used in medium_ai_difficulty to find if it sunk a ship and if it
+ * did to then restart its shooting pattern back to left, right, top, bottom
+ */
+function ship_check() {
+    arrChange = false;
+        for (let i = 0; i < 90; i++) {
+            if (arrChange != true)
+            {
+                if (player1array[i] == 'sunk')
+                {
+                    if (arrP1[i] == 'sunk')
+                    {
+                        //nothing changed
+                    }
+                    else
+                    {
+                        arrChange = true;
+                        changeDir = 0;
+                    }
+                }
+                if (player2array[i] == 'sunk')
+                {
+                    if (arrP2[i] == 'sunk')
+                    {
+                        //nothing changed
+                    }
+                    else
+                    {
+                        arrChange = true;
+                        changeDir = 0;
                     }
                 }
             }
