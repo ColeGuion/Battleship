@@ -257,7 +257,7 @@ function ai_medium_turn()
         }
         if (changeDir == 2)
         {
-            if (rand_location <= 10)
+            if (rand_location < 10)
             {
                 changeDir = changeDir+1;
                 firstTime = true;
@@ -275,7 +275,7 @@ function ai_medium_turn()
         }
         if (changeDir == 3)
         {
-            if (rand_location > 80)
+            if (rand_location > 79)
             {
                 changeDir = 0;
                 firstTime = true;
