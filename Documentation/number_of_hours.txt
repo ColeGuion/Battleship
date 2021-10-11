@@ -68,3 +68,22 @@ Total Amount of Hours: About 60 hours
 
 Got this total by adding up all of the hours that we recorded. This was significantly higher then what we initially thought it would take, 
 which is likely due to the selection and combat phases of the project taking longer than we thought.
+
+-----------------------------------------------------------------------------------------------------------
+
+PROJECT 2 TEAM 20 
+We estimated our person-hours to be around 35 hours as it would take some time learning and comprehending the previous team's code.
+The other factor to our estimate was the time it would take to implement the required features for this project. Therefore,
+we arrived at 35 hours for our estimate.
+The actual breakdown of person-hours is shown below.
+
+James: 10/3 - 8 Hours, 10/4 - 5.5 Hours, 10/5 - 0.5 Hours
+        Total: 14 Hours
+Konrad: 10/3 - 1 Hour, 10/5 - 3 Hours
+        Total: 4 Hours
+Cole: 9/30 - 3 Hours, 10/4 - 0.5 Hours, 10/7 - 5 Hours, 10/8 - 1 Hour
+        Total: 9.5 Hours
+Paul: 10/3 - 1 Hour, 10/4 - 1 Hour, 10/6 - 3 Hours, 10/7 - 2 Hours
+        Total 7 Hours
+
+Grand Total: 34.5 Hours

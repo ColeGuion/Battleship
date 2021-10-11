@@ -5,6 +5,11 @@
       "taskLabel": "task-index",
       "appliesTo": "index.html",
       "type": "launch"
+    },
+    {
+      "taskLabel": "task-index",
+      "appliesTo": "index.html",
+      "type": "launch"
     }
   ]
 }

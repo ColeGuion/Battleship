@@ -21,3 +21,8 @@ Used this article to help learn how to use JSdocs
 
 9/10 Blake Richmeier- https://www.youtube.com/watch?v=lhNdUVh3qCc&t=689s
 Used this video to learn how to properly use JS to create a game and interact with HTML
+
+------------------------------------------------------------------------------------------------------------------
+
+PROJECT 2 GROUP 20:
+We did not have to cite any work for this project as we were able to use the methods already in place and/or write our own methods.

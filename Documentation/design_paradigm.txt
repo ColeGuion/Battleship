@@ -1,0 +1,5 @@
+We believe our Project 1 team to have used a top-down design paradigm for their project. The reason we believe this is because
+in order to create a project like this with the UI and user experience in mind, some sort of top-down design must have been used.
+Their top-down design might have looked at what the user would see, then broken down into classes, and with those classes it was broken
+down into methods needed to implement those classes. So, in order to effectively organize what would be used to create the Battleship game,
+a top-down design paradigm was used. 
