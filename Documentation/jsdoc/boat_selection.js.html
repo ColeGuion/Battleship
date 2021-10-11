@@ -26,7 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>let in_boat_selcection = true; //if in the boat selection phase
+            <pre class="prettyprint source linenums"><code>let in_boat_selection = true; //if in the boat selection phase
 let num_of_ships = 1; //holds the number of ships
 let ship_inc = 1; //increment that counts up to compare with the number of ships
 let max_ships; //maximum amount of ships that players can place
@@ -36,6 +36,8 @@ let is_vertical = true; //If the boat is in a vertical orientation
 let is_horizontal = true; //If the boat is in a horizontal orientaion
 let boat6 = false;
 let first_button = true;
+let initial_location; // stores the starting coordinate of a ship. To be used by the AI
+let direction; // stores the direction of the current ship being placed by the AI
 var yes_button; //varibale to hold the yes_button
 var body; //body declaration to help with the placement of buttons
 var no_button; //variable to hold the no_button
@@ -47,6 +49,142 @@ let player_ships_placed = {
 }
 
 /**
+ * @author James Barnett
+ * @see ask_more_ships for function declaration
+ * @return {void}
+ * @description function that places AI's ships on the board
+ */
+function ai_boat_sel() {
+    is_player_one = false;
+    in_boat_selection = true;
+
+    // directional variables
+    const left = -1; 
+    const right = 1;
+    const up = -10; 
+    const down = 10;
+
+    // max and min grid locations
+    const min = 90; 
+    const max = 179;
+
+    // array that holds a ship's proposed coordinates
+    let locationArray = []; 
+
+    if (in_boat_selection) {
+        // gets a random location on the board that is inclusive of the min and max value
+        let rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+
+        // picks direction for the ship
+        let dir = [left, right, up, down][Math.floor(Math.random() * (3 - 0 + 1) + 0)];
+
+        // if the random location chosen is invalid, find a new location
+        while (valid_first_block(rand_location) === false || valid_first_block(rand_location) === undefined) { 
+            rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        // store the location and direction
+        setShipLocation(rand_location, dir);
+
+        if (ship_inc &lt;= num_of_ships &amp;&amp; valid_first_block(getShipLocation()[0])) {
+            for (let i = 0; i &lt; num_of_ships; i++) {
+                // if the entire length of the ship won't be valid, find a new starting location for the ship.
+                // Reset i to 0 to iterate through and check if the new location is valid
+                if (checkShip(getShipLocation()[0] + (getShipLocation()[1] * i)) === false) {
+                    rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+                    setShipLocation(rand_location, getShipLocation()[1]);
+                    i = 0;
+                }
+                if (valid_first_block(getShipLocation()[0] + (getShipLocation()[1] * i)) === false) {
+                    rand_location = Math.floor(Math.random() * (max - min + 1) + min);
+                    setShipLocation(rand_location, getShipLocation()[1]);
+                    i = 0;
+                }
+            }
+            // store the proposed coordinates in locationArray
+            for (let i = 0; i &lt; num_of_ships; i++) {
+                let location = getShipLocation()[0] + (getShipLocation()[1] * i);
+                locationArray[i] = location;
+            }
+            // if the ship does not wrap around and is a valid placement, place it on the board
+            if (shipWrap(locationArray) !== false) {
+                for (let i = 0; i &lt; num_of_ships; i++) {
+                    store_ship(locationArray[i]);
+                    var shipImage = document.createElement('img');
+                    shipImage.src = 'images/ship' + num_of_ships + '.png';
+                    document.getElementById(locationArray[i]).appendChild(shipImage);
+                }
+                ship_inc++;
+            } // start over if the ship wraps around to the other side
+            else if (shipWrap(locationArray) === false) {
+                ai_boat_sel();
+            }
+        }
+        if (ship_inc == num_of_ships + 1) {
+            ask_more_ships();
+            document.getElementById("yes_button").click();
+        }
+    }
+}
+
+/**
+ * @author James Barnett
+ * @param num1 - initial location for ship
+ * @param num2 - direction of ship
+ * @see ai_boat_sel() for function declaration
+ * @return {void}
+ * @description Function that sets initial ship placement of AI's current ship and its direction in case it needs to reference back to the initial location
+ */
+function setShipLocation(num1, num2) {
+    initial_location = num1;
+    direction = num2;
+}
+
+/**
+ * @author James Barnett
+ * @see ai_boat_sel() for function declaration
+ * @return {Array}
+ * @description Function that gets initial ship placement of AI's current ship
+ */
+function getShipLocation() {
+    return [initial_location, direction];
+}
+
+/**
+ * @author James Barnett
+ * @param num - location on the board
+ * @see ai_boat_sel() for function declaration
+ * @return {boolean}
+ * @description Function checks player2array for ship locations
+ */
+function checkShip(num) {
+    if (player2array[num - 90] == 'ship') {
+        return false;
+    } return true;
+}
+
+/**
+ * @author James Barnett
+ * @param params - an array of intended locations for a ship to go
+ * @see ai_boat_sel() for function declaration
+ * @return {boolean}
+ * @description Function checks incoming array of a ship's desired coordinate and checks to ensure the ship won't wrap to the other side
+ */
+function shipWrap(params) {
+    for (let i = 0; i &lt; params.length; i++) {
+        if (params[i] % 10 == 9) { // if a ship is placed in column J...
+            if (params[i + 1] % 10 == 0) { // and the same ship is then placed in column A...
+                return false;
+            }
+        } else if (params[i] % 10 == 0) { // if a ship is placed in column A...
+            if (params[i + 1] % 10 == 9) { // and the same ship is then placed in column J...
+                return false;
+            }
+        }
+    } return true;
+}
+
+/**
  * @author Ben Moeller
  * @see game.js to see original declaration
  * @return {void}
@@ -54,48 +192,28 @@ let player_ships_placed = {
  */
 function boat_sel_click() {
     console.log(this);
-    if (in_boat_selcection) {
+    if (in_boat_selection) {
         if (boat_first_click &amp;&amp; !first_turn_already_a_ship_there(parseInt(this.id)) &amp;&amp; valid_first_block(parseInt(this.id))) {
             store_ship(parseInt(this.id));
             var shipImage = document.createElement('img');
-            if (num_of_ships == 1)
-                shipImage.src = 'images/ship1.png';
-            else if (num_of_ships == 2)
-                shipImage.src = 'images/ship2.png';
-            else if (num_of_ships == 3)
-                shipImage.src = 'images/ship3.png';
-            else if (num_of_ships == 4)
-                shipImage.src = 'images/ship4.png';
-            else if (num_of_ships == 5)
-                shipImage.src = 'images/ship5.png';
-            else if (num_of_ships == 6)
-                shipImage.src = 'images/ship6.png';
-
+            shipImage.src = 'images/ship' + num_of_ships + '.png'; // draws colored square to represent 1xN ship
             document.getElementById(this.id).appendChild(shipImage)
             ship_inc++;
             boat_first_click = false;
         } else if (ship_inc &lt;= num_of_ships &amp;&amp; boat_check_valid_move(parseInt(this.id))) {
             store_ship(parseInt(this.id));
             var shipImage = document.createElement('img')
-            if (num_of_ships == 1)
-                shipImage.src = 'images/ship1.png';
-            else if (num_of_ships == 2)
-                shipImage.src = 'images/ship2.png';
-            else if (num_of_ships == 3)
-                shipImage.src = 'images/ship3.png';
-            else if (num_of_ships == 4)
-                shipImage.src = 'images/ship4.png';
-            else if (num_of_ships == 5)
-                shipImage.src = 'images/ship5.png';
-            else if (num_of_ships == 6)
-                shipImage.src = 'images/ship6.png';
+            shipImage.src = 'images/ship' + num_of_ships + '.png';
             document.getElementById(this.id).innerHTML = ''
             document.getElementById(this.id).appendChild(shipImage)
             ship_inc++;
         } else if (ship_inc > num_of_ships) {
             context.fillText("Max number of blocks placed", 675, 475);
         } else if (boat_check_valid_move(parseInt(this.id)) == false) {
-            if (first_turn_already_a_ship_there(parseInt(this.id))) {
+            if (parseInt(this.id) > 89 &amp;&amp; is_player_one) {
+                context.fillText("Wrong board!", 735, 575);
+            }
+            else if (first_turn_already_a_ship_there(parseInt(this.id))) {
                 context.fillText("Already a ship there!", 709, 550);
             } else {
                 context.fillText("Please selects blocks to create", 675, 600);
@@ -104,16 +222,22 @@ function boat_sel_click() {
         }
 
         if (!is_player_one &amp;&amp; num_of_ships == 7) {
-            in_boat_selcection = false;
+            in_boat_selection = false;
             in_combat = true;
             fillSquaresPlayer2();
             start_combat();
         } else if (ship_inc == max_ships + 1 &amp;&amp; is_player_one &amp;&amp; ship_inc == num_of_ships + 1) {
             boat6 = true;
             if (first_button) {
-                context.fillText("Ready to pass", 735, 150);
-                context.fillText("to player 2?", 740, 175);
-                ask_more_ships();
+                if (is_ai_game != true) {
+                    context.fillText("Ready to pass", 735, 150);
+                    context.fillText("to Player 2?", 740, 175);
+                    ask_more_ships();
+                } else {
+                    context.fillText("Ready to pass", 735, 150);
+                    context.fillText("to the AI?", 740, 175);
+                    ask_more_ships();
+                }
             }
         } else if (ship_inc == num_of_ships + 1) {
             if (first_button) {
@@ -166,6 +290,7 @@ function place_ships() {
 function ask_more_ships() {
     first_button = false;
     yes_button = document.createElement("yes_button");
+    yes_button.setAttribute("id", "yes_button");
     yes_button.innerHTML = "Yes";
     body = document.getElementsByTagName("body")[0];
     body.appendChild(yes_button);
@@ -182,17 +307,23 @@ function ask_more_ships() {
             }
             is_player_one = false;
             num_of_ships = 1;
+            if (is_ai_game) {
+                draw();
+                ai_boat_sel();
+            }
         } else if (!is_player_one &amp;&amp; num_of_ships == max_ships + 1) {
-            in_boat_selcection = false;
+            in_boat_selection = false;
             in_combat = true;
             fillSquaresPlayer2();
             start_combat();
             console.log("should start combat phase")
         } else if (!is_player_one &amp;&amp; ship_inc == 7) {
-            in_boat_selcection = false;
+            in_boat_selection = false;
             in_combat = true;
             fillSquaresPlayer2();
             start_combat();
+        } else if (!is_player_one &amp;&amp; is_ai_game) {
+            ai_boat_sel();
         }
         draw();
     })
@@ -230,7 +361,7 @@ function store_ship(num) {
  */
 function boat_check_valid_move(num) {
     if (is_player_one) {
-        for (i = 1; i &lt; num_of_ships; i++) {
+        for (i = 1; i &lt;= num_of_ships; i++) {
             if (player_ships_placed.player1.charAt(num) != ".") { //&lt;-- checks to ensure there isn't already a ship placed there
                 return false;
             } else if (player_ships_placed.player1.charAt(num - i) == num_of_ships &amp;&amp; is_horizontal) {
@@ -245,21 +376,28 @@ function boat_check_valid_move(num) {
             } else if (player_ships_placed.player1.charAt(num + (i * 10)) == num_of_ships &amp;&amp; is_vertical) {
                 is_horizontal = false;
                 return true;
-            }
+            } 
             return false;
         }
     } else {
         num = num - 90;
-        for (i = 1; i &lt; num_of_ships; i++) {
+        for (i = 1; i &lt;= num_of_ships; i++) {
             if (player_ships_placed.player2.charAt(num) != ".") { //&lt;-- checks to ensure there isn't already a ship placed there
                 return false;
             } else if (player_ships_placed.player2.charAt(num - i) == num_of_ships &amp;&amp; is_horizontal) {
+                is_vertical = false;
                 return true
             } else if (player_ships_placed.player2.charAt(num + i) == num_of_ships &amp;&amp; is_horizontal) {
+                is_vertical = false;
                 return true;
             } else if (player_ships_placed.player2.charAt(num - (i * 10)) == num_of_ships &amp;&amp; is_vertical) {
+                is_horizontal = false;
                 return true;
             } else if (player_ships_placed.player2.charAt(num + (i * 10)) == num_of_ships &amp;&amp; is_vertical) {
+                is_horizontal = false;
+                return true;
+            }
+            if (is_ai_game) {
                 return true;
             }
             return false;
@@ -271,7 +409,7 @@ function boat_check_valid_move(num) {
  * @author Alec Mcglynn
  * @description checks whether or not the boat has enough space to fit based on the first square
  * @param {num} - number that corresponds to a number on the board
- * @return bool 
+ * @return bool
  */
 function valid_first_block(num) {
     let space_up = 0,
@@ -374,7 +512,8 @@ function print_boat_sel_inst() {
     } else {
         context.fillText("------------------------------------------------->", 655, 125);
     }
-}</code></pre>
+}
+</code></pre>
         </article>
     </section>
 
@@ -384,13 +523,13 @@ function print_boat_sel_inst() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ask_more_ships">ask_more_ships</a></li><li><a href="global.html#boat_check_valid_move">boat_check_valid_move</a></li><li><a href="global.html#boat_sel_click">boat_sel_click</a></li><li><a href="global.html#buffer">buffer</a></li><li><a href="global.html#check_game_over_player_1">check_game_over_player_1</a></li><li><a href="global.html#check_game_over_player_2">check_game_over_player_2</a></li><li><a href="global.html#checkFlip">checkFlip</a></li><li><a href="global.html#checkHit">checkHit</a></li><li><a href="global.html#checkSunk">checkSunk</a></li><li><a href="global.html#checkSunkHelper">checkSunkHelper</a></li><li><a href="global.html#draw">draw</a></li><li><a href="global.html#fillSquaresPlayer1">fillSquaresPlayer1</a></li><li><a href="global.html#fillSquaresPlayer2">fillSquaresPlayer2</a></li><li><a href="global.html#first_turn_already_a_ship_there">first_turn_already_a_ship_there</a></li><li><a href="global.html#place_ships">place_ships</a></li><li><a href="global.html#print_board">print_board</a></li><li><a href="global.html#print_board2">print_board2</a></li><li><a href="global.html#print_boat_sel_inst">print_boat_sel_inst</a></li><li><a href="global.html#reset_bools">reset_bools</a></li><li><a href="global.html#showPlayer1board">showPlayer1board</a></li><li><a href="global.html#showPlayer1ships">showPlayer1ships</a></li><li><a href="global.html#showPlayer2board">showPlayer2board</a></li><li><a href="global.html#showPlayer2Ships">showPlayer2Ships</a></li><li><a href="global.html#start_combat">start_combat</a></li><li><a href="global.html#store_ship">store_ship</a></li><li><a href="global.html#valid_first_block">valid_first_block</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ai_boat_sel">ai_boat_sel</a></li><li><a href="global.html#ask_more_ships">ask_more_ships</a></li><li><a href="global.html#boat_check_valid_move">boat_check_valid_move</a></li><li><a href="global.html#boat_sel_click">boat_sel_click</a></li><li><a href="global.html#checkShip">checkShip</a></li><li><a href="global.html#first_turn_already_a_ship_there">first_turn_already_a_ship_there</a></li><li><a href="global.html#getShipLocation">getShipLocation</a></li><li><a href="global.html#place_ships">place_ships</a></li><li><a href="global.html#print_boat_sel_inst">print_boat_sel_inst</a></li><li><a href="global.html#reset_bools">reset_bools</a></li><li><a href="global.html#setShipLocation">setShipLocation</a></li><li><a href="global.html#shipWrap">shipWrap</a></li><li><a href="global.html#store_ship">store_ship</a></li><li><a href="global.html#valid_first_block">valid_first_block</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Sep 19 2021 19:08:18 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 10 2021 20:42:26 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
